@@ -1,0 +1,57 @@
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>John's Map of Parkrun Events</title>
+    <link href="http://google-developers.appspot.com/maps/documentation/javascript/examples/default.css" rel="stylesheet">
+
+    <!-- If you are in China, you may need to use theis site for the Google Maps code
+    <script src="http://maps.google.cn/maps/api/js" type="text/javascript"></script> -->
+    <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+
+    <script src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/markerclusterer/src/markerclusterer_compiled.js"></script>
+    <script src="where_parkrun.js"></script>
+    <script>
+
+      function initialize() {
+        alert("To see the title of a marker, hover over the marker. Click the marker for the event webpage.");
+        var myLatlng = new google.maps.LatLng(54.944733,-1.602094)
+        var mapOptions = {
+          zoom: 3,
+          center: myLatlng,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        }
+        var map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
+		var base_url = "http://www.parkrun."
+        i = 0;
+        var markers = [];
+        for ( pos in myData ) {
+            i = i + 1;
+            var row = myData[pos];
+		    window.console && console.log(row);
+            // if ( i < 3 ) { alert(row); }
+            var newLatlng = new google.maps.LatLng(row[0], row[1]);
+            var marker = new google.maps.Marker({
+                position: newLatlng,
+                map: map,
+				title: row[2],
+				url: base_url.concat(row[3].concat("/".concat(row[2])))
+            });
+			google.maps.event.addListener(marker, 'click', function() {
+				window.location.href = this.url;
+				
+			});
+            markers.push(marker);
+        }
+      }
+    </script>
+  </head>
+  <body onload="initialize()">
+<div id="map_canvas" style="height: 500px"></div>
+<p><b>About this Map</b></p>
+<p>
+This is a cool map from 
+<a href="http://www.pythonlearn.com">www.pythonlearn.com</a>.
+</p>
+</body>
+</html>
